@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logic Audio Web API</title>
+    <script src="https://cdn.jsdelivr.net/npm/webmidi@latest/dist/iife/webmidi.iife.js"></script>
+</head>
+<body>
+    <h1>Hello Logic Audio Wolrld</h1>
+    <div onclick='init()'>Start</div>
+
+    <script src="../server.js"></script>
+    <script>
+        function init(){
+            WebMidi.enable(function(err){
+                if (err){
+                    console.log('The was an error', err);
+                }
+
+                console.log(WebMidi.outputs); //Print midi output to console
+
+                WebMidi.outputs.forEach(function(output){
+                    if (output.name == 'IAC Driver Bus 1')
+                    window.output = output;  //global output is equal to output
+                });
+
+                startLoop();
+            }, true);
+        }
+
+        function startLoop(){
+
+            
+            let output = WebMidi.outputs[2];
+            let channel = output.channels[1];
+           
+          
+
+            // channel1.playNote(["C2"]);
+           
+            setInterval(function() {
+                var step = 1;
+                if (step == 1) {
+                    output.playNote(['D5', 'E5','B5'], 2, {duration: 300});
+                }
+                
+                step++;
+                if (step > 16) {
+                    step = 1;
+                };
+                
+                
+            }, 2000);
+        }
+
+            
+        
+    </script>
+</body>
+</html>
